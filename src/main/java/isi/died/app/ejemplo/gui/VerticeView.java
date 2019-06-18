@@ -17,7 +17,7 @@ public class VerticeView {
 
     private Integer coordenadaX;
     private Integer coordenadaY;
-    private final Integer RADIO = 20;
+    public final Integer RADIO = 20;
     private Shape nodo;
 
     private String nombre;
@@ -103,9 +103,11 @@ public class VerticeView {
 
 	@Override
     public String toString() {
-        return "Vertice{" + "coordenadaX=" + coordenadaX + ", coordenadaY=" + coordenadaY + '}';
+        return "Vertice{ nombre: "+this.nombre + "coordenadaX=" + coordenadaX + ", coordenadaY=" + coordenadaY + '}';
     }
 
-    
+    public void update() {
+    	this.nodo = new Ellipse2D.Double(coordenadaX,coordenadaY,RADIO,RADIO);
+    }
     
 }

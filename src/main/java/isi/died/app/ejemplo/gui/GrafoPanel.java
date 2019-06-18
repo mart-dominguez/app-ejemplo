@@ -6,8 +6,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,9 +34,14 @@ public class GrafoPanel extends JPanel {
     private List<AristaView> aristas;
     
     private GrafoController controller;
+    
+    private int xRepintado = 0;
+    private int yRepintado = 0;
 
-    private AristaView auxiliar;
-
+    private VerticeView aristaSeleccionada = null;
+    
+    private Boolean arrastrando = false;
+    
     public GrafoPanel() {    	
         this.framePadre = (JFrame) this.getParent();
         this.controller = new GrafoController(this);
@@ -53,26 +60,34 @@ public class GrafoPanel extends JPanel {
             public void mouseClicked(MouseEvent event) {
                 if (event.getClickCount() == 2 && !event.isConsumed()) {
                     event.consume();
+                    VerticeView v = clicEnUnNodo(event.getPoint());
+                    if(v != null) {
+                    	aristaSeleccionada = v; 
+                    	aristaSeleccionada.setColor(Color.CYAN);
+                    	actualizarVertice(aristaSeleccionada, event.getPoint());
+                    }
                     System.out.println("DOBLE CLICK");
                 }
             }
 
             public void mouseReleased(MouseEvent event) {
-               VerticeView vDestino = clicEnUnNodo(event.getPoint());
-               if(vDestino != null) {
-            	   System.out.println(vDestino.toString());   
+               System.out.println("mouseReleased: "+event.getPoint());
+               if(aristaSeleccionada != null) {
+            	   aristaSeleccionada.setColor(Color.BLUE);
+            	   actualizarVertice(aristaSeleccionada, event.getPoint());
                }
-               
+               aristaSeleccionada = null;
+               arrastrando = false;
             }
+            
 
         });
 
         addMouseMotionListener(new MouseAdapter() {
             public void mouseDragged(MouseEvent event) {
-                VerticeView vOrigen = clicEnUnNodo(event.getPoint());
-                if(vOrigen != null) {
-                	System.out.println(vOrigen.toString());
-                }
+                if(aristaSeleccionada != null) {
+                	actualizarVertice(aristaSeleccionada ,event.getPoint());
+                } 
             }
         });
     }
@@ -85,19 +100,16 @@ public class GrafoPanel extends JPanel {
         this.vertices.add(vert);
     }
     
-    public void dibujarVertices() {}
-
     private void dibujarVertices(Graphics2D g2d) {
         for (VerticeView v : this.vertices) {
             g2d.setPaint(Color.BLUE);
-            g2d.drawString(v.etiqueta(),v.getCoordenadaX()-5,v.getCoordenadaY()-5);
+            g2d.drawString(v.etiqueta(),v.getCoordenadaX()+25,v.getCoordenadaY()+25);
             g2d.setPaint(v.getColor());
             g2d.fill(v.getNodo());
         }
     }
 
     private void dibujarAristas(Graphics2D g2d) {
-        System.out.println(this.aristas);
         for (AristaView a : this.aristas) {
             g2d.setPaint(a.getColor());
             g2d.setStroke ( a.getFormatoLinea());
@@ -122,18 +134,67 @@ public class GrafoPanel extends JPanel {
         return null;
     }
 
-    protected void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g) {    	
         super.paintComponent(g);
+
         Graphics2D g2d = (Graphics2D) g.create();
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
         dibujarVertices(g2d);
-        dibujarAristas(g2d);
+      //  dibujarAristas(g2d);
     }
 
     public Dimension getPreferredSize() {
         return new Dimension(900, 400);
     }
 
+    private void actualizarVertice(VerticeView v, Point puntoNuevo) {
+        int OFFSET_X = v.getNombre().length()*20;
+        int OFFSET_Y = 31;
+        repaint(xRepintado-5,yRepintado-5,v.RADIO+OFFSET_X, v.RADIO + OFFSET_Y);
+        xRepintado = puntoNuevo.x;
+        yRepintado = puntoNuevo.y;
+        v.setCoordenadaX(xRepintado);
+        v.setCoordenadaY(yRepintado);
+        v.update();
+        repaint(xRepintado-5,yRepintado-5,v.RADIO+OFFSET_X, v.RADIO + OFFSET_Y);
+    }
 
+    private void dibujarFlecha(Graphics2D g2, Point tip, Point tail, Color color)
+    {
+        double phi;
+        int barb;      
+        phi = Math.toRadians(40);
+        barb = 20;
+        
+        g2.setPaint(color);
+        double dy = tip.y - tail.y;
+        double dx = tip.x - tail.x;
+        double theta = Math.atan2(dy, dx);
+        //System.out.println("theta = " + Math.toDegrees(theta));
+        double x, y, rho = theta + phi;
+        for(int j = 0; j < 2; j++)
+        {
+            x = tip.x - barb * Math.cos(rho);
+            y = tip.y - barb * Math.sin(rho);
+            g2.draw(new Line2D.Double(tip.x, tip.y, x, y));
+            rho = theta - phi;
+        }
+    }
+
+    /*
+     *         super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D)g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                            RenderingHints.VALUE_ANTIALIAS_ON);
+        int w = getWidth();
+        int h = getHeight();
+        Point sw = new Point(w/8, h*7/8);
+        Point ne = new Point(w*7/8, h/8);
+        g2.draw(new Line2D.Double(sw, ne));
+        drawArrowHead(g2, sw, ne, Color.red);
+        drawArrowHead(g2, ne, sw, Color.blue);
+     */
     
-    
+
 }
