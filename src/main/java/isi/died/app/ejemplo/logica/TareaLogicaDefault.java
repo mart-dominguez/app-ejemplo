@@ -1,45 +1,44 @@
 package isi.died.app.ejemplo.logica;
 
-import java.util.List;
+import java.util.List; 
 
+import isi.died.app.ejemplo.dao.TareaDao;
+import isi.died.app.ejemplo.dao.TareaDaoH2;
+import isi.died.app.ejemplo.modelo.Proyecto;
 import isi.died.app.ejemplo.modelo.Tarea;
 
 public class TareaLogicaDefault implements TareaLogica {
 
-	@Override
-	public Tarea crear(String nombreTarea, Integer duracion, Integer idProyecto) {
-		// TODO Auto-generated method stub
-		return null;
+	private TareaDao tareaDao;
+	
+	public TareaLogicaDefault() {
+		this.tareaDao = new TareaDaoH2();
 	}
 
 	@Override
-	public Tarea actualizar(Integer id, String nombreTarea, Integer duracion, Integer idProyecto) {
-		// TODO Auto-generated method stub
-		return null;
+	public Tarea guardar(Tarea p) {
+		// si tiene ID entonces actualizar
+		if(p.getId()!= null && p.getId()>0) {
+			return this.tareaDao.actualizar(p);
+		} else {
+			return this.tareaDao.crear(p);			
+		}
 	}
 
 	@Override
 	public void borrar(Integer id) {
-		// TODO Auto-generated method stub
-
+		this.tareaDao.borrar(id);
 	}
 
 	@Override
 	public Tarea buscar(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.tareaDao.buscar(id);
 	}
 
 	@Override
 	public List<Tarea> buscar() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.tareaDao.buscarTodos();
 	}
 
-	@Override
-	public List<Tarea> buscarPorProyecto(Integer idProyecto) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

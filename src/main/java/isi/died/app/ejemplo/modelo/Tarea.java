@@ -5,6 +5,8 @@ public class Tarea {
 	private Integer id;
 	private String descripcion;
 	private Integer duracion;
+	private Proyecto proyecto;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -22,6 +24,15 @@ public class Tarea {
 	}
 	public void setDuracion(Integer duracion) {
 		this.duracion = duracion;
+	}
+	
+	
+	
+	public Proyecto getProyecto() {
+		return proyecto;
+	}
+	public void setProyecto(Proyecto proyecto) {
+		this.proyecto = proyecto;
 	}
 	@Override
 	public int hashCode() {
