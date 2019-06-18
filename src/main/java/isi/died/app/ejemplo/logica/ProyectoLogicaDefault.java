@@ -4,15 +4,18 @@ import java.util.List;
 
 import isi.died.app.ejemplo.dao.ProyectoDao;
 import isi.died.app.ejemplo.dao.ProyectoDaoH2;
+import isi.died.app.ejemplo.dao.TareaDao;
 import isi.died.app.ejemplo.modelo.Proyecto;
 import isi.died.app.ejemplo.modelo.Tarea;
 
 public class ProyectoLogicaDefault implements ProyectoLogica {
 
-	private ProyectoDao proyectoDao;
-	
+	private ProyectoDao proyectoDao;	
+	private TareaLogica tareaLogica;
+
 	public ProyectoLogicaDefault() {
 		this.proyectoDao = new ProyectoDaoH2();
+		this.tareaLogica = new TareaLogicaDefault();
 	}
 
 	@Override
@@ -27,8 +30,8 @@ public class ProyectoLogicaDefault implements ProyectoLogica {
 
 	@Override
 	public void agregarTarea(Proyecto p, Tarea t) {
-		// TODO Auto-generated method stub
-		System.out.println("METODO NO IMPLEMENTADO");
+		t.setProyecto(p);
+		this.tareaLogica.guardar(t);
 	}
 
 	@Override

@@ -20,11 +20,9 @@ public class ProyectoDaoH2 implements ProyectoDao {
 	private static final String SQL_SELECT = "SELECT ID, NOMBRE FROM PROYECTO ";
 	
 	public ProyectoDaoH2() {
-		System.out.println("CREO...");
 		try(Connection conn = DBConnection.get()){
 			try(Statement st = conn.createStatement()){
 				st.executeUpdate(SQL_CREATE);				
-				System.out.println("EJECUTA : "+ SQL_CREATE);
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();

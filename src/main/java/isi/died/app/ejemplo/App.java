@@ -51,7 +51,7 @@ public class App
           mi1=new JMenuItem("Tareas");
           mi1.addActionListener(e -> { 
         	  f.getContentPane().removeAll();
-        	  f.getContentPane().add( ServiceLocator.getInstance().getPanelProyecto());
+        	  f.getContentPane().add( ServiceLocator.getInstance().getPanelTarea());
         	  f.pack();
           });
           menu1.add(mi1);
@@ -65,7 +65,7 @@ public class App
           mi3=new JMenuItem("Grafo");
           mi3.addActionListener(e -> { 
         	  f.getContentPane().removeAll();
-        	  f.getContentPane().add( ServiceLocator.getInstance().getPanelProyecto());
+        	  f.getContentPane().add( ServiceLocator.getInstance().getPanelGrafo());
         	  f.pack();
           });
           menu1.add(mi3);     

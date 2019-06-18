@@ -63,7 +63,8 @@ public class Proyecto {
 	}
 	@Override
 	public String toString() {
-		return "Proyecto [id=" + id + ", nombre=" + nombre + ", tareas=" + tareas + "]";
+		//return "Proyecto [id=" + id + ", nombre=" + nombre + ", tareas=" + tareas + "]";
+		return this.nombre;
 	}
 	
 	

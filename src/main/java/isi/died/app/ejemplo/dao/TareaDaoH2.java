@@ -16,18 +16,16 @@ public class TareaDaoH2 implements TareaDao {
 	private ProyectoDao proyectoDaoH2;
 
 	private static final String SQL_CREATE = "CREATE TABLE IF NOT EXISTS TAREA (ID IDENTITY NOT NULL PRIMARY KEY, NOMBRE VARCHAR(80), DURACION INTEGER, ID_PROYECTO INTEGER)";
-	private static final String SQL_INSERT = "INSERT INTO TAREA (NOMBRE,DURACION,ID_PROYECTO) VALUES (?)";
+	private static final String SQL_INSERT = "INSERT INTO TAREA (NOMBRE,DURACION,ID_PROYECTO) VALUES (?,?,?)";
 	private static final String SQL_UPDATE = "UPDATE TAREA SET NOMBRE =?, DURACION = ? ,ID_PROYECTO = ? WHERE ID = ?";
 	private static final String SQL_DELETE = "DELETE FROM TAREA WHERE ID = ?";
 	private static final String SQL_SELECT = "SELECT ID, NOMBRE, DURACION, ID_PROYECTO FROM TAREA";
 	
 	public TareaDaoH2() {
 		this.proyectoDaoH2 = new ProyectoDaoH2();
-		System.out.println("CREO...");
 		try(Connection conn = DBConnection.get()){
 			try(Statement st = conn.createStatement()){
 				st.executeUpdate(SQL_CREATE);				
-				System.out.println("EJECUTA : "+ SQL_CREATE);
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
