@@ -6,7 +6,7 @@ public class Arista<T> {
 	private Number valor;
 
 	public Arista(){
-		valor=0.0;
+		valor=1.0;
 	} 
 	
 	public Arista(Vertice<T> ini,Vertice<T> fin){

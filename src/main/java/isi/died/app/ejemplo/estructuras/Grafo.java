@@ -1,16 +1,20 @@
 package isi.died.app.ejemplo.estructuras;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
@@ -33,7 +37,7 @@ public class Grafo<T> {
 	}
 	
 	public void conectar(T n1,T n2){
-		this.conectar(getNodo(n1), getNodo(n2), 0.0);
+		this.conectar(getNodo(n1), getNodo(n2), 1.0);
 	}
 
 	public void conectar(T n1,T n2,Number valor){
@@ -208,221 +212,118 @@ public class Grafo<T> {
       return salida;
     }
 
-        
-        
-        
-//        private boolean esAdyacente8(Vertice<T> v1,Vertice<T> v2){
-//            return this.getAdyacentes(v1).stream().anyMatch((unAdy) -> (unAdy.equals(v2)));
-//        }
-//
-//        
-//        public boolean existeCaminoIter(Vertice<T> v1,Vertice<T> v2){
-//            if(esAdyacente8(v1, v2)) return true;
-//            Stack<Vertice<T>> pendientes = new Stack<Vertice<T>>();
-//            HashSet<Vertice<T>> marcados = new HashSet<Vertice<T>>();
-//            pendientes.addAll(this.getAdyacentes(v1));
-//            marcados.addAll(this.getAdyacentes(v1));
-//            
-//            while(!pendientes.isEmpty()){
-//                Vertice<T> actual = pendientes.pop();
-//                if(esAdyacente8(actual, v2)) {
-//                    System.out.println(marcados);
-//                    return true;
-//                }                
-//                List<Vertice<T>> adyacentes = this.getAdyacentes(actual);
-//                for(Vertice<T> v : adyacentes){
-//                    if(!marcados.contains(v)){ 
-//                        pendientes.push(v);
-//                        marcados.add(v);
-//                    }
-//		}
-//            }
-//            System.out.println("marcados: "+v1.getValor()+" --> "+v2.getValor());
-//            System.out.println(marcados);
-//            return false;
-//        }
-//        
-//         public List<String> caminos(Vertice<T> v1,Vertice<T> v2){
-//            List<String> caminos = new ArrayList<String>();
-//            Stack<Vertice<T>> path  = new Stack<Vertice<T>>();   // the current path
-//            Set<Vertice<T>> onPath  = new HashSet<Vertice<T>>();     // the set of vertices on the path
-//            buscarTodos(v1,v2,path,onPath,caminos);
-//            return caminos;
-//        }
-//         
-//
-//
-//    // use DFS
-//    private void buscarTodos(Vertice<T> v, Vertice<T> t,Stack<Vertice<T>> path,Set<Vertice<T>> onPath,List<String> caminos) {
-//
-//        // add node v to current path from s
-//        path.push(v);
-//        onPath.add(v);
-//
-//        // found path from s to t - currently prints in reverse order because of stack
-//        if (v.equals(t)) {
-//            caminos.add(path.toString());
-//        // consider all neighbors that would continue path with repeating a node
-//        }else {
-//            for (Vertice<T> w : this.getAdyacentes(v)) {
-//                if (!onPath.contains(w)) buscarTodos(w, t,path,onPath,caminos);
-//            }
-//        }
-//
-//        // done exploring from v, so remove from path
-//        path.pop();
-//        onPath.remove(v);
-//    
-//         }
-//        
-//        public boolean existeCiclo(){            
-//            /*if(esAdyacente8(v1, v2)) return true;
-//            List<Vertice<T>> adyacentes = this.getAdyacentes(v1);
-//            for(Vertice<T> v : adyacentes){
-//                return existeCaminoRec(v, v2);
-//            }*/
-//            return false;
-//        }
-//        
-//        public boolean existeCaminoRec(Vertice<T> v1,Vertice<T> v2){
-//            if(esAdyacente8(v1, v2)) return true;
-//            else return existeCaminoRec(v1, v2,new HashSet<Vertice<T>>());
-//        }
-//
-//        private boolean existeCaminoRec(Vertice<T> v1,Vertice<T> v2,Set<Vertice<T>> visitados){            
-//            if(esAdyacente8(v1, v2)) return true;
-//            List<Vertice<T>> adyacentes = this.getAdyacentes(v1);
-//            for(Vertice<T> v : adyacentes){
-//                if(!visitados.contains(v)) {
-//                    visitados.add(v);
-//                    if(existeCaminoRec(v, v2,visitados))return true;
-//                }
-//            }
-//            return false;
-//        }
-//        
-//        public boolean existeCaminoIter(Vertice<T> v1,Vertice<T> v2,Integer n){
-//            if(esAdyacente8(v1, v2) && n==1) return true;
-//            Stack<Vertice<T>> pendientes = new Stack<Vertice<T>>();
-//            HashSet<Vertice<T>> marcados = new HashSet<Vertice<T>>();
-//            pendientes.addAll(this.getAdyacentes(v1));
-//            marcados.addAll(this.getAdyacentes(v1));
-//            Integer saltos = 1;
-//            while(!pendientes.isEmpty() && saltos<=n){
-//                Vertice<T> actual = pendientes.pop();
-//                if(esAdyacente8(actual, v2)) {
-//                    System.out.println("es adyacente marcados: "+v1.getValor()+" --> "+v2.getValor());
-//                    System.out.println(marcados);
-//                    return true;
-//                }                
-//                List<Vertice<T>> adyacentes = this.getAdyacentes(actual);
-//                for(Vertice<T> v : adyacentes){
-//                    if(!marcados.contains(v)){ 
-//                        pendientes.push(v);
-//                        marcados.add(v);
-//                    }
-//		}
-//                saltos++;
-//            }
-//            System.out.println("marcados: "+v1.getValor()+" --> "+v2.getValor());
-//            System.out.println(marcados);
-//            return false;
-//        }
-//        
-//        public boolean existeCaminoRec(Vertice<T> v1,Vertice<T> v2,Integer n){
-//            return existeCaminoRec(v1, v2,n,new HashSet<Vertice<T>>());
-//        }
-//        
-//        public boolean existeCaminoRec(Vertice<T> v1,Vertice<T> v2,Integer n,Set<Vertice<T>> visitados){
-//            if(n==0) return false;
-//            if(esAdyacente8(v1, v2)&& n ==1) return true;
-//            List<Vertice<T>> adyacentes = this.getAdyacentes(v1);
-//            for(Vertice<T> v : adyacentes){
-//                if(!visitados.contains(v)) {
-//                    visitados.add(v);
-//                    if(existeCaminoRec(v, v2,n-1,visitados))return true;
-//                }
-//            }
-//            return false;
-//        }
-        
-        /**
-         * retorna un valor entero, 
-         * que representa la distancia más grande del 
-         * menor camino que hay entre “unVertice” 
-         * y cualquier otro vertice del grafo.
-         * @param v1
-         * @return 
-         */
-        public Integer excentricidad(Vertice<T> v1){
-            return 0;
-        }       
-	
-	
-	/**
-	 * Chequea si tiene ciclos. 
-	 * Para esto toma cada nodo y realiza un recorrido en profundidad, pero en cada paso chequea si el nodo al cual le solicitar
-	 * los adyacentes no est en la lista de adyacentes. Si lo est hay ciclos.
-	 * @return
-	 */
-//	public boolean tiene2Caminos(){
-//		for(Vertice<T> vertice : this.vertices){		
-//			Stack<Vertice<T>> aVisitar= new Stack<Vertice<T>>(); 
-//			//para cada vertice busco el recorrido en profundidad			
-//			Set<Vertice<T>> visitados = new TreeSet<Vertice<T>>();
-//			aVisitar.push(vertice);			
-//			while(!aVisitar.isEmpty()){				
-//				Vertice<T> aux = aVisitar.pop();				
-//				for(Vertice<T> ady :this.getAdyacentes(aux)){
-//					if(visitados.contains(ady)) {
-//						System.out.println("ciclo entre "+aux.getValor()+" : "+ady.getValor());
-//						return true;
-//					}else{
-//						aVisitar.add(ady);
-//					}
-//				}
-//				visitados.add(aux);
-//			}						
-//		}		
-//		return false;
-//	}        
+    public Map<T,Integer> caminosMinimoDikstra(T valorOrigen){
+    	Vertice<T> vOrigen = new Vertice<T>(valorOrigen);
+    	Map<Vertice<T>, Integer> caminosResultado = this.caminosMinimoDikstra(vOrigen);
+    	Map<T,Integer> resultado = new LinkedHashMap<T, Integer>();
+    	for(Entry<Vertice<T>, Integer> unNodo : caminosResultado.entrySet()) {
+    		resultado.put(unNodo.getKey().getValor(), unNodo.getValue());
+    	}
+    	return resultado;
+    }
+    
+    private Map<Vertice<T>, Integer> caminosMinimoDikstra(Vertice<T> origen) {
 
-//	 // A recursive function to print
-//    // all paths from 'u' to 'd'.
-//    // isVisited[] keeps track of
-//    // vertices in current path.
-//    // localPathList<> stores actual
-//    // vertices in the current path
-//    private void printAllPathsUtil(Integer u, Integer d,
-//                                    boolean[] isVisited,
-//                            List<Integer> localPathList) {
-//         
-//        // Mark the current node
-//        isVisited[u] = true;
-//         
-//        if (u.equals(d)) 
-//        {
-//            System.out.println(localPathList);
-//        }
-//         
-//        // Recur for all the vertices
-//        // adjacent to current vertex
-//        for (Integer i : adjList[u]) 
-//        {
-//            if (!isVisited[i])
-//            {
-//                // store current node 
-//                // in path[]
-//                localPathList.add(i);
-//                printAllPathsUtil(i, d, isVisited, localPathList);
-//                 
-//                // remove current node
-//                // in path[]
-//                localPathList.remove(i);
-//            }
-//        }
-//         
-//        // Mark the current node
-//        isVisited[u] = false;
-//    }
+    	// inicializo todas las distancias a INFINITO
+    	Map<Vertice<T>, Integer> distancias = new HashMap<Vertice<T>, Integer>();
+    	for(Vertice<T> unVertice : this.vertices) {
+    		distancias.put(unVertice, Integer.MAX_VALUE);
+    	}
+    	distancias.put(origen, 0);
+    	
+    	// guardo visitados y pendientes de visitar
+    	Set<Vertice<T>> visitados = new HashSet<Vertice<T>>();
+    	TreeMap<Integer,Vertice<T>> aVisitar= new TreeMap<Integer,Vertice<T>>();
+
+    	aVisitar.put(0,origen);
+    	 
+    	while (!aVisitar.isEmpty()) {
+    		Entry<Integer, Vertice<T>> nodo = aVisitar.pollFirstEntry();
+    		visitados.add(nodo.getValue());
+    		
+        	int nuevaDistancia = Integer.MIN_VALUE;
+        	List<Vertice<T>> adyacentes = this.getAdyacentes(nodo.getValue());
+        	
+        	for(Vertice<T> unAdy : adyacentes) {
+        		if(!visitados.contains(unAdy)) {
+        			Arista<T> enlace = this.buscarArista(nodo.getValue(), unAdy);
+        			if(enlace !=null) {
+        				nuevaDistancia = enlace.getValor().intValue();
+        			}
+        			int distanciaHastaAdy = distancias.get(nodo.getValue()).intValue();
+        			int distanciaAnterior = distancias.get(unAdy).intValue();
+        			if(distanciaHastaAdy  + nuevaDistancia < distanciaAnterior ) {
+        				distancias.put(unAdy, distanciaHastaAdy  + nuevaDistancia);
+        				aVisitar.put(distanciaHastaAdy  + nuevaDistancia,unAdy);
+        			}        			
+        		}
+        	}    		
+    	}
+    	System.out.println("DISTANCIAS DESDE "+origen);
+    	System.out.println("Resultado: "+distancias);
+    	return distancias;
+    }
+    
+   
+    private Arista<T> buscarArista(Vertice<T> v1, Vertice<T> v2){
+    	for(Arista<T> unaArista : this.aristas) {
+    		
+    		if(unaArista.getInicio().equals(v1) && unaArista.getFin().equals(v2)) return unaArista;
+    	}
+    	return null;
+    }
+    
+    public void floydWarshall() {
+    	int cantVertices= this.vertices.size();
+    	int[][] matrizDistancias = new int[cantVertices][cantVertices];
+    	
+    	for(int i=0; i<cantVertices;i++) {
+        	for(int j=0; j<cantVertices;j++) {
+        		if(i== j) {
+            		matrizDistancias[i][j] = 0;        			
+        		}else {
+	        		Arista<T> arista = this.buscarArista(this.vertices.get(i), this.vertices.get(j));
+	        		if(arista!=null) {
+	            		matrizDistancias[i][j] = arista.getValor().intValue();        			
+	        		} else {
+	            		matrizDistancias[i][j] = 9999;        			
+	        		}
+        		}
+        	}    		
+    	}
+    	imprimirMatriz(matrizDistancias);
+    	
+    	for (int k = 0; k < cantVertices; k++) 
+        { 
+            // Pick all vertices as source one by one 
+            for (int i = 0; i < cantVertices; i++) 
+            { 
+                // Pick all vertices as destination for the 
+                // above picked source 
+                for (int j = 0; j < cantVertices; j++) 
+                { 
+                    // If vertex k is on the shortest path from 
+                    // i to j, then update the value of dist[i][j] 
+                    if (matrizDistancias[i][k] + matrizDistancias[k][j] < matrizDistancias[i][j]) 
+                    	matrizDistancias[i][j] = matrizDistancias[i][k] + matrizDistancias[k][j]; 
+                } 
+            } 
+            System.out.println("MATRIZ "+k);
+            imprimirMatriz(matrizDistancias);
+        } 
+    	
+    }
+    
+    public void imprimirMatriz(int[][] m) {
+    	for(int i=0; i<m.length;i++) {
+    		System.out.print("[ ");
+        	for(int j=0; j<m[i].length;j++) {
+        		System.out.print(i+":"+j+" = "+m[i][j]+ ",   ");
+        	}
+        	System.out.println(" ]");
+    	}
+    	
+    	
+
+    }
 }
