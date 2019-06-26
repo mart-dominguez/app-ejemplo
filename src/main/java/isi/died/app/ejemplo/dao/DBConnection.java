@@ -17,13 +17,13 @@ public class DBConnection {
 	 * En caso de habilitar el almacenamiento en archivos
 	 * http://www.h2database.com/html/features.html#database_url 
 	 */
-	private static final String url ="jdbc:h2:~/ejemplo;AUTO_SERVER=TRUE;FILE_LOCK=SOCKET";
+	// private static final String url ="jdbc:h2:~/ejemplo;AUTO_SERVER=TRUE;FILE_LOCK=SOCKET";
 	
 	/**
 	 * Necesidad del uso del parametro DB_CLOSE_DELAY
 	 * http://www.h2database.com/html/features.html#in_memory_databases
 	 */
-    //private static final String url ="jdbc:h2:mem:ejemplo;DB_CLOSE_DELAY=-1";
+    private static final String url ="jdbc:h2:mem:ejemplo;DB_CLOSE_DELAY=-1";
 
     private static final String user="died";
     private static final String pass="died";
